@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -14,7 +15,8 @@ namespace WebApiAutoresVsCode
 
         public void ConfigureSevices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(x=> //solucionar ciclo de objetos detectados
+            x.JsonSerializerOptions.ReferenceHandler= ReferenceHandler.IgnoreCycles); 
 
             services.AddDbContext<ApplicationDbContext>(options => 
             options.UseSqlServer(Configuration.GetConnectionString("defaultConnection")));
@@ -38,9 +40,10 @@ namespace WebApiAutoresVsCode
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => {
-                endpoints.MapControllers();
-            });
+           app.UseEndpoints(endpoints=>
+           {
+            endpoints.MapControllers();
+           });
         }
     }
 }

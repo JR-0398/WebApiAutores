@@ -18,7 +18,8 @@ namespace WebApiAutoresVsCode.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Autor>>> Get()
         {
-            return await context.Autores.ToListAsync();
+            // con .Include(x=> x.Libros) traemos la data relacionada de Libros
+            return await context.Autores.Include(x => x.Libros).ToListAsync();
         }
 
         [HttpPost]
